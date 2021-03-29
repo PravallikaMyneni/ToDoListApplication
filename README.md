@@ -19,4 +19,4 @@ This is simple todo application with following features
 * Filter the ToDo tasks list based on task progress.
 * Delete all completed tasks.
 
-![ToDo Application](../src/images/ApplicationScreen.png)
+![ToDo Application](../main/src/images/ApplicationScreen.png)
