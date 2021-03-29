@@ -58,6 +58,8 @@ const fetchFilteredList = (filterObj, listArr) => {
 //mapping for grouped row based on date
 function groupToDoItems(props, groupedJson) {
     var groupedDates = Object.keys(groupedJson);
+    //sort based on dates
+    groupedDates.sort((a,b)=>new Date(a)-new Date(b));
     if (groupedDates.length > 0) {
         var groupContainer = groupedDates.map(function (key) {
             var rows = groupedJson[key];
@@ -84,7 +86,6 @@ function groupToDoItems(props, groupedJson) {
 function getToDoItems(props, rowsList) {
     var mappedList = rowsList.map((rec) => {
         var taskStatusImg = (rec.todoStatus === true) ? checkboxSelected : checkboxUnselected;
-        var bgColor = (rec.todoStatus === true) ? { "backgroundColor": "#CCDFCB" } : { "backgroundColor": "#7A9D96" };
         var changeOpacity = (rec.todoStatus === true) ? { "opacity": "50%" } : { "opacity": "100%" };
         return (
             <div key={rec.todoId} className="todo-row" style={changeOpacity}>
