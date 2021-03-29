@@ -14,10 +14,10 @@ const AddToDo = (props) => {
     minDateValue = yyyy + '-' + mm + '-' + dd;
 
     const [toDoItem, setToDoItem] = useState({
-        toDoId:"",
+        todoId:"",
         todoText: "",
         todoDate: "",
-        toDoStatus: false
+        todoStatus: false
     });
 
     //onChange handlers for text,date
@@ -30,14 +30,14 @@ const AddToDo = (props) => {
 
     const onClickOfAdd = (event) => {
         var idVal = uuid.v1();
-        toDoItem.toDoId = idVal;
-        setToDoItem({ ...toDoItem, toDoId: idVal });
+        toDoItem.todoId = idVal;
+        setToDoItem({ ...toDoItem, todoId: idVal });
         props.addNewToDo(toDoItem);
         setToDoItem((prevState)=>{ return{
-            toDoId:"",
+            todoId:"",
             todoText: "",
             todoDate: "",
-            toDoStatus: false
+            todoStatus: false
         }});
 
     };
@@ -45,13 +45,16 @@ const AddToDo = (props) => {
 
     return (
         <div className="app-child-left">
+            <div className="add-detail">
+                <h3>ADD TODO TASK</h3>
+            </div>
             <div className ="display-vertical add-detail">
                 <label>TODO task</label>
                 <input type="text" name="toDoText" value ={toDoItem.toDoText} onChange={handleTextChange}
                        placeholder ="Todo Task"  />
             </div>
             <div className ="display-vertical add-detail">
-                <label>Task date</label>
+                <label>Task Date</label>
                 <input type="date" id="start" name="toDoDate" value = {toDoItem.toDoDate} 
                     min={minDateValue} onChange={handleDateChange}></input>
             </div>

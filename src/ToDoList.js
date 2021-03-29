@@ -7,22 +7,55 @@ import remove from './images/remove.png';
 function ToDoList(props) {
     var toDoItems = props.itemsList;
     if (toDoItems) {
-        var groupByDateJson = toDoItems.reduce(function (groupList, currVal) {
+        var filterList = fetchFilteredList(props.filterParams, toDoItems);
+        var groupByDateJson = filterList.reduce(function (groupList, currVal) {
             (groupList[currVal.todoDate] = groupList[currVal.todoDate] || []).push(currVal);
             return groupList;
         }, {});
+        
         var toDoList = groupToDoItems(props, groupByDateJson);
     }
 
     return (
         <div>
-            <h3 class="list-heading">TASKS LIST</h3>
+            <h3 className="list-heading">TASKS LIST</h3>
             {toDoList}
         </div>
 
     );
 };
-//grouped row based on date
+
+//filter the list with search/filter param entered
+const fetchFilteredList = (filterObj, listArr) => {
+    var filteredList = [], searchFilter = [];
+    var statusMap = {
+      "Progress": "false",
+      "Completed": "true",
+      "All": "true false"
+    };
+    if (filterObj.search !== "") {
+      for (var i = 0; i < listArr.length; i++) {
+        if (listArr[i].todoText.indexOf(filterObj.search) >= 0) {
+          searchFilter.push(listArr[i]);
+        }
+      }
+    } else {
+      searchFilter = listArr;
+    }
+    if (filterObj.filter === "All") {
+      filteredList = searchFilter;
+    } else {
+      filteredList = searchFilter.filter(function (rec) {
+        var statusVal = JSON.stringify(rec.todoStatus);
+        if (statusVal.indexOf(statusMap[filterObj.filter]) >= 0)
+          return rec;
+      });
+    }
+
+    return filteredList;
+  };
+
+//mapping for grouped row based on date
 function groupToDoItems(props, groupedJson) {
     var groupedDates = Object.keys(groupedJson);
     if (groupedDates.length > 0) {
@@ -46,19 +79,21 @@ function groupToDoItems(props, groupedJson) {
         );
     }
 }
-//row item
+
+//mapping for single row item
 function getToDoItems(props, rowsList) {
     var mappedList = rowsList.map((rec) => {
-        var taskStatusImg = (rec.toDoStatus === true) ? checkboxSelected : checkboxUnselected;
-        var bgColor = (rec.toDoStatus === true) ? { "backgroundColor": "#BAB2B5" } : { "backgroundColor": "#EDC7B7" };
+        var taskStatusImg = (rec.todoStatus === true) ? checkboxSelected : checkboxUnselected;
+        var bgColor = (rec.todoStatus === true) ? { "backgroundColor": "#CCDFCB" } : { "backgroundColor": "#7A9D96" };
+        var changeOpacity = (rec.todoStatus === true) ? { "opacity": "50%" } : { "opacity": "100%" };
         return (
-            <div key={rec.toDoId} className="todo-row" style={bgColor}>
+            <div key={rec.todoId} className="todo-row" style={changeOpacity}>
                 <img src={taskStatusImg}
-                    onClick={!rec.toDoStatus ? props.updateToDoStatus.bind(this, rec.toDoId) : undefined} />
+                    onClick={!rec.todoStatus ? props.updateToDoStatus.bind(this, rec.todoId) : undefined} />
                 <label>{rec.todoText}</label>
                 <div className="row-right-items">
                     <img src={remove}
-                        onClick={props.removeToDoItem.bind(this, rec.toDoId)} />
+                        onClick={props.removeToDoItem.bind(this, rec.todoId)} />
                 </div>
             </div>
         );

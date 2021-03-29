@@ -7,7 +7,10 @@ import './App.css';
 
 const App = () => {
   const [toDoList, updateToDoList] = useState([]);
-
+  const [filterObj, updateFilterParam] = useState({
+    search: "",
+    filter: "All"
+  });
   /* useEffect(() => {
      // storing todos items
      const temp = JSON.stringify(toDoList);
@@ -22,45 +25,63 @@ const App = () => {
     const savedTodos = JSON.parse(temp);
     return savedTodos || []
   }
-
+  //add new todo task into list
   const addNewToDo = (todoItem) => {
     updateToDoList([...toDoList, todoItem]);
   };
+  //update the status of task
   const updateToDoStatus = (todoId) => {
     updateToDoList((prevState) => {
       var arrList = [];
       var toDoList = prevState;
       for (var i = 0; i < toDoList.length; i++) {
-        if (toDoList[i].toDoId === todoId) {
-          toDoList[i].toDoStatus = true;
+        if (toDoList[i].todoId === todoId) {
+          toDoList[i].todoStatus = true;
         }
         arrList.push(toDoList[i]);
       }
       return arrList;
     });
   };
+  //remove a task from list
   const removeToDoItem = (id) => {
     updateToDoList((prevState) => {
       var toDoList = prevState.filter(function (rec) {
-        if (rec.toDoId !== id)
+        if (rec.todoId !== id)
           return rec;
       });
       return toDoList;
     });
   };
+  //delete all completed tasks
+  const removeCompletedTask = ()=>{
+    var allTask = [...toDoList];
+    for(var i=0; i< allTask.length; i++){
+      if (allTask[i].todoStatus === true)
+        removeToDoItem(allTask[i].todoId);
+    }
+  };
+ //update search/filter param entered
+  const getFilterParam = (searchText, selectedFilter) => {
+    updateFilterParam({
+      search: searchText,
+      filter: selectedFilter
+    });
+  };
+
 
   return (
     <div >
-      <h2 className ="app-heading">TODO APPLICATION</h2>
+      <h2 className="app-heading">TODO APPLICATION</h2>
       <div className="app display-horizontal">
         <AddToDo addNewToDo={addNewToDo} />
         <div className="app-child-right">
+          <SearchFilterToDo getFilterParam={getFilterParam} removeCompletedTask = {removeCompletedTask}/>
           <ToDoList itemsList={toDoList}
             updateToDoStatus={updateToDoStatus}
-            removeToDoItem={removeToDoItem} />
+            removeToDoItem={removeToDoItem}
+            filterParams = {filterObj} />
         </div>
-
-
       </div>
     </div>
   );
