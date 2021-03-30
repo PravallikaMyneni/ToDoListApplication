@@ -50,12 +50,12 @@ const AddToDo = (props) => {
             </div>
             <div className ="display-vertical add-detail">
                 <label>TODO task</label>
-                <input type="text" name="toDoText" value ={toDoItem.toDoText} onChange={handleTextChange}
+                <input type="text" name="toDoText" value ={toDoItem.todoText} onChange={handleTextChange}
                        placeholder ="Todo Task"  />
             </div>
             <div className ="display-vertical add-detail">
                 <label>Task Date</label>
-                <input type="date" id="start" name="toDoDate" value = {toDoItem.toDoDate} 
+                <input type="date" id="start" name="toDoDate" value = {toDoItem.todoDate} 
                     min={minDateValue} onChange={handleDateChange}></input>
             </div>
             <div>
