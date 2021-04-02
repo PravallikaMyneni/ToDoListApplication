@@ -84,6 +84,12 @@ html{
   color: #DCAE1D;
   text-align: center;
 }
+.add-detail p{
+  margin: 5px 0px 0px 0px;
+  color: rgb(216, 0, 0);
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+}
 input{
   margin-top:5px;
   height:35px;
